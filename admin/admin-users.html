@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เช็คข้อมูลทั้งหมด - Adventure Village</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700;1,800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="landing-container admin-container" id="adminWrapper">
+
+        <!-- NAV TOP BAR -->
+        <nav class="admin-nav-bar with-back">
+            <a href="admin-dashboard.html" class="back-link">← กลับศูนย์ควบคุมงานซ่อม</a>
+
+            <div class="admin-top-controls">
+
+                <div class="user-menu-wrapper">
+                    <div class="user-menu-dropdown" onclick="toggleAdminMenu()">
+                        <div class="user-avatar-sm">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                            </svg>
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+
+                    <div class="profile-dropdown-card" id="adminProfileDropdown">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                                </svg>
+                            </div>
+                            <div class="dropdown-user-info">
+                                <h4 id="adminDropdownName">คุณ ปรียา มงคล</h4>
+                                <p>🏢 นิติบุคคล (แอดมิน)</p>
+                                <p>🏠 สำนักงานส่วนกลาง</p>
+                            </div>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <button type="button" class="btn-logout" onclick="clearAuthSessionAndLogout()">ออกจากระบบ</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-dashboard-main">
+            <div class="admin-header-titles">
+                <h1 class="admin-main-title">ฐานข้อมูลสมาชิกและทีมช่าง</h1>
+                <h2 class="admin-sub-title">ตรวจสอบรายชื่อลูกบ้าน ช่างซ่อมบำรุง และผลประเมินความพึงพอใจ</h2>
+            </div>
+
+            <!-- TABS: รายชื่อผู้ใช้ / ผลประเมินความพึงพอใจ -->
+            <div class="admin-main-tabs" style="justify-content: space-between; flex-wrap: wrap;">
+                <div style="display: flex; gap: 24px;">
+                    <button type="button" class="main-tab-btn active" id="tabUsersBtn" onclick="switchDataTab('users')">
+                        รายชื่อลูกบ้านและช่าง
+                    </button>
+                    <button type="button" class="main-tab-btn" id="tabRatingsBtn" onclick="switchDataTab('ratings')">
+                        ผลประเมินความพึงพอใจ
+                    </button>
+                </div>
+
+                <button type="button" class="btn-pill-dark" onclick="openAddUserModal()">
+                    <span>+ เพิ่มช่าง / สมาชิกใหม่</span>
+                </button>
+            </div>
+
+            <!-- TAB 1: รายชื่อผู้ใช้และช่าง -->
+            <section id="usersDataSection" class="tab-panel">
+                <div class="admin-search-row">
+                    <input type="text" id="userSearchInput" class="admin-search-input"
+                        placeholder="🔍 ค้นหาชื่อ-นามสกุล, Username, บ้านเลขที่, แผนกช่าง, เบอร์โทรศัพท์ หรืออีเมล..."
+                        oninput="renderUsersTable()">
+                </div>
+
+                <div class="status-filter-bar">
+                    <span class="filter-label">กรองบทบาท :</span>
+                    <button type="button" class="status-pill-btn active" data-role="all"
+                        onclick="filterUsersRole('all')">ทั้งหมด</button>
+                    <button type="button" class="status-pill-btn" data-role="resident"
+                        onclick="filterUsersRole('resident')">ลูกบ้าน</button>
+                    <button type="button" class="status-pill-btn" data-role="technician"
+                        onclick="filterUsersRole('technician')">ช่างซ่อมบำรุง</button>
+                    <button type="button" class="status-pill-btn" data-role="admin"
+                        onclick="filterUsersRole('admin')">นิติบุคคล</button>
+                </div>
+
+                <div class="admin-table-card">
+                    <table class="village-table">
+                        <thead>
+                            <tr>
+                                <th>ชื่อ-นามสกุล</th>
+                                <th>บทบาท</th>
+                                <th>บ้านเลขที่ / แผนก</th>
+                                <th>เบอร์โทรศัพท์</th>
+                                <th>อีเมล</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminUsersTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 2: ผลประเมินความพึงพอใจหลังซ่อมเสร็จ -->
+            <section id="ratingsDataSection" class="tab-panel" style="display: none;">
+                <div class="rating-banner-card">
+                    <span style="font-size:15px; font-weight:800; font-style:italic;">⭐
+                        คะแนนความพึงพอใจเฉลี่ยรวมของหมู่บ้าน</span>
+                    <strong id="avgRatingSummary" style="font-size:18px; color:#d97706;">ยังไม่มีผลประเมิน</strong>
+                </div>
+
+                <div class="admin-table-card">
+                    <table class="village-table">
+                        <thead>
+                            <tr>
+                                <th>รหัสงาน</th>
+                                <th>ปัญหาที่แจ้ง</th>
+                                <th>ช่างผู้รับผิดชอบ</th>
+                                <th>คะแนน</th>
+                                <th>ข้อเสนอแนะจากลูกบ้าน</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminRatingsTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- MODAL: เพิ่มรายชื่อช่าง / ลูกบ้าน -->
+    <div class="admin-modal-overlay" id="addUserModal">
+        <div class="admin-modal-card">
+            <div class="modal-top">
+                <h3>+ เพิ่มรายชื่อช่าง / สมาชิกใหม่</h3>
+                <button type="button" class="modal-close" onclick="closeModal('addUserModal')">×</button>
+            </div>
+
+            <form onsubmit="submitNewUser(event)" class="modal-form">
+                <label for="userFullnameInput">ชื่อ-นามสกุล *</label>
+                <input type="text" id="userFullnameInput" class="modal-input"
+                    placeholder="ระบุชื่อ-นามสกุล (เช่น ช่างเอก ฝ่ายไฟฟ้า)" required>
+
+                <label for="userRoleInput">บทบาท *</label>
+                <select id="userRoleInput" class="modal-input">
+                    <option value="technician">ช่างซ่อมบำรุง</option>
+                    <option value="resident">ลูกบ้าน</option>
+                    <option value="admin">นิติบุคคล / แอดมิน</option>
+                </select>
+
+                <label for="userHouseInput">บ้านเลขที่ หรือ ฝ่ายช่าง *</label>
+                <input type="text" id="userHouseInput" class="modal-input" placeholder="เช่น 67/67 หรือ ฝ่ายไฟฟ้า"
+                    required>
+
+                <label for="userPhoneInput">เบอร์โทรศัพท์ *</label>
+                <input type="tel" id="userPhoneInput" class="modal-input" placeholder="08X-XXX-XXXX" required>
+
+                <label for="userEmailInput">อีเมล *</label>
+                <input type="email" id="userEmailInput" class="modal-input" placeholder="เช่น tech4@adventure.village"
+                    required>
+
+                <label for="userUsernameInput">ชื่อผู้ใช้สำหรับเข้าสู่ระบบ (Username) *</label>
+                <input type="text" id="userUsernameInput" class="modal-input" placeholder="เช่น tech4" required>
+
+                <label for="userPasswordInput">รหัสผ่าน (Password) *</label>
+                <input type="password" id="userPasswordInput" class="modal-input" placeholder="ตั้งรหัสผ่าน" required>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-action btn-red"
+                        onclick="closeModal('addUserModal')">ยกเลิก</button>
+                    <button type="submit" class="btn-action btn-green">บันทึกข้อมูล</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="/admin.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>

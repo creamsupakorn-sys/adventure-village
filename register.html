@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>สร้างบัญชีใหม่ - Adventure Village</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="landing-container">
+        <!-- ชั้นที่ 1: รูปภาพพื้นหลัง -->
+        <div class="bg-image"></div>
+
+        <!-- ชั้นที่ 2: แผ่นสีดำโปร่งแสง -->
+        <div class="bg-overlay"></div>
+
+        <!-- ชั้นที่ 3: เนื้อหาหน้าลงทะเบียน -->
+        <div class="content-wrapper">
+
+            <!-- NAV TOP: ปุ่มกลับหน้าแรก -->
+            <nav class="register-nav">
+                <a href="/index.html" class="back-link">← กลับหน้าแรก</a>
+            </nav>
+
+            <!-- REGISTER CONTAINER -->
+            <main class="register-container">
+                <h1 class="register-title">สร้างบัญชีใหม่</h1>
+
+                <!-- FORM CARD (กล่องสีเทา/ขาวโปร่งแสง) -->
+                <!-- FORM CARD (กล่องสีเทา/ขาวโปร่งแสง) -->
+                <form id="registerForm" class="register-card" onsubmit="handleRegister(event)">
+        
+                    <!-- ชื่อ-นามสกุล -->
+                    <div class="form-group">
+                        <label for="fullname">ชื่อ-นามสกุล <span class="required">*</span></label>
+                        <input type="text" id="fullname" placeholder="ระบุชื่อ-นามสกุล"
+                            oninput="clearFieldError('fullname', 'registerFullnameError')" required>
+                        <span class="error-msg" id="registerFullnameError"></span>
+                    </div>
+
+                    <!-- เบอร์โทรศัพท์ -->
+                    <div class="form-group">
+                        <label for="phone">เบอร์โทรศัพท์ <span class="required">*</span></label>
+                        <input type="tel" id="phone" placeholder="ระบุเบอร์โทรศัพท์"
+                            oninput="clearFieldError('phone', 'registerPhoneError')" required>
+                        <span class="error-msg" id="registerPhoneError"></span>
+                    </div>
+
+                    <!-- อีเมล -->
+                    <div class="form-group">
+                        <label for="email">อีเมล <span class="required">*</span></label>
+                        <input type="email" id="email" placeholder="ระบุอีเมล"
+                            oninput="clearFieldError('email', 'registerEmailError')" required>
+                        <span class="error-msg" id="registerEmailError"></span>
+                    </div>
+
+                    <!-- บ้านเลขที่ (ซ้ำกันได้) -->
+                    <div class="form-group">
+                        <label for="houseNo">บ้านเลขที่</label>
+                        <input type="text" id="houseNo" placeholder="ระบุบ้านเลขที่ (เช่น 99/12)">
+                    </div>
+
+                    <!-- ชื่อผู้ใช้ -->
+                    <div class="form-group">
+                        <label for="username">ชื่อผู้ใช้ <span class="required">*</span></label>
+                        <input type="text" id="username" placeholder="ตั้งชื่อผู้ใช้"
+                            oninput="clearFieldError('username', 'registerUsernameError')" required>
+                        <span class="error-msg" id="registerUsernameError"></span>
+                    </div>
+
+                    <!-- รหัสผ่าน (ซ้ำกันได้) -->
+                    <div class="form-group">
+                        <label for="password">รหัสผ่าน <span class="required">*</span></label>
+                        <input type="password" id="password" placeholder="ตั้งรหัสผ่าน" required>
+                    </div>
+
+                    <!-- ปุ่มส่งข้อมูล -->
+                    <button type="submit" class="btn-submit">ลงทะเบียน</button>
+
+                </form>
+            </main>
+
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>

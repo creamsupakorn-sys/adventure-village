@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>แจ้งปัญหาใหม่ - Adventure Village</title>
+
+    <!-- 1. ดึง Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="landing-container">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+
+        <div class="content-wrapper">
+
+            <nav class="register-nav">
+                <a href="dashboard.html" class="back-link">← ย้อนกลับ</a>
+            </nav>
+
+            <main class="report-container">
+                <h1 class="report-title">แจ้งปัญหาใหม่</h1>
+
+                <form id="reportForm" class="report-card" onsubmit="handleIssueSubmit(event)" novalidate>
+
+                    <!-- 1. ประเภทของปัญหา -->
+                    <div class="category-grid" id="categoryGrid">
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'ขยะ')">🗑️
+                            ขยะ</button>
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'ไฟฟ้า')">💡
+                            ไฟฟ้า</button>
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'น้ำ')">🚰 น้ำ</button>
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'ถนน')">🛣️
+                            ถนน</button>
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'สัตว์จรจัด')">🐾
+                            สัตว์จรจัด</button>
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'ไฟ')">🔥 ไฟ</button>
+                        <button type="button" class="category-btn" onclick="selectCategory(this, 'อื่นๆ')">⚠️
+                            อื่นๆ</button>
+                    </div>
+                    <input type="hidden" id="selectedCategory">
+                    <div id="categoryError" class="error-msg">กรุณาเลือกประเภทของปัญหา</div>
+
+                    <!-- 2. สถานที่ (แผนที่จริง Leaflet + OpenStreetMap) -->
+                    <!-- สถานที่ (บังคับปักหมุด) -->
+                    <div class="form-group">
+                        <div class="map-label-row">
+                            <label>สถานที่ (คลิกหรือลากหมุดบนแผนที่) <span class="required">*</span></label>
+                            <button type="button" class="btn-current-location" onclick="useCurrentGpsLocation()">
+                                📍 ใช้ตำแหน่งปัจจุบัน
+                            </button>
+                        </div>
+
+                        <!-- แถบแจ้งสถานะการปักหมุด -->
+                        <div id="mapPinStatus" class="map-pin-status unpinned">
+                            ⚠️ ยังไม่ได้ปักหมุดสถานที่ — กรุณาคลิกบนแผนที่เพื่อระบุจุดเกิดปัญหา
+                        </div>
+
+                        <!-- กล่องแผนที่ Leaflet -->
+                        <div id="mapBoxWrapper" class="map-box-wrapper">
+                            <div id="map"></div>
+                        </div>
+                        <input type="hidden" id="selectedLocation">
+
+                        <!-- ข้อความแจ้งเตือนสีแดงกรณีลืมปักหมุด -->
+                        <span class="error-msg" id="mapLocationError"></span>
+                    </div>
+
+                    <!-- 3. รายละเอียดปัญหา -->
+                    <div class="form-section">
+                        <label for="issueDetail" class="section-label">รายละเอียดปัญหา <span
+                                class="required">*</span></label>
+                        <input type="text" id="issueDetail" class="text-input-pill"
+                            placeholder="ระบุรายละเอียดปัญหาที่พบ..."
+                            oninput="clearFieldError('issueDetail', 'detailError')">
+                        <!-- ข้อความแจ้งเตือนรายละเอียด -->
+                        <span class="error-msg" id="detailError"></span>
+                    </div>
+
+                    <!-- 4. แนบรูปถ่าย & ปุ่มกด -->
+                    <div class="form-section">
+                        <label class="section-label">แนบรูปถ่ายประกอบ <span class="required">*</span></label>
+                        <div class="upload-box" id="uploadBox" onclick="document.getElementById('imageUpload').click()">
+                            <input type="file" id="imageUpload" accept="image/*" style="display: none;"
+                                onchange="previewUploadedImage(event)">
+
+                            <!-- รูปแบบตอนยังไม่เลือกไฟล์ -->
+                            <div id="uploadDefaultContent" style="text-align: center;">
+                                <div class="upload-icon">📷</div>
+                                <div id="uploadText">คลิกเพื่ออัปโหลดรูปถ่ายปัญหา</div>
+                                <div style="font-size: 12px; color: #64748b; margin-top: 2px;">รองรับไฟล์ JPG, PNG หรือ
+                                    WebP</div>
+                            </div>
+
+                            <!-- รูปแบบตอนเลือกรูปแล้ว (แสดงภาพพรีวิว) -->
+                            <img id="imagePreview" alt="ตัวอย่างรูปภาพ"
+                                style="display: none; width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0; border-radius: 18px;">
+                        </div>
+                        <div id="imageError" class="error-msg"></div>
+                    </div>
+                    <!-- ปุ่มดำเนินการ -->
+                    <div class="form-actions">
+                        <button type="button" class="btn-cancel" onclick="cancelReport()">ยกเลิก</button>
+                        <button type="submit" class="btn-submit">ยืนยัน</button>
+                    </div>
+
+                    <!-- 2. ดึง Leaflet JS ก่อน script.js -->
+                    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+                    <script src="/script.js"></script>
+                    <script src="/theme.js"></script>
+</body>
+
+</html>

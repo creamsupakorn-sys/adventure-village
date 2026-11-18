@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>รายละเอียดการแจ้งปัญหา - Adventure Village</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700;1,800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="landing-container">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+
+        <div class="content-wrapper">
+            <!-- ปุ่มย้อนกลับ -->
+            <nav class="register-nav">
+                <a href="/check-status.html" class="back-link">← กลับหน้าแรก</a>
+            </nav>
+
+            <main class="detail-container">
+                <h1 class="status-page-title" id="detailHeaderTitle">สถานะการแจ้งปัญหา</h1>
+
+                <!-- การ์ดหลักรวมข้อมูลทั้งหมดตามภาพต้นแบบ -->
+                <section class="glass-card main-detail-sheet">
+
+                    <!-- ส่วนหัว: รูปภาพ + รายละเอียดปัญหา -->
+                    <div class="detail-hero-row">
+                        <div class="detail-hero-img">
+                            <img id="detailBeforeImg" src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27400%27%20height=%27250%27%3E%3Crect%20width=%27100%25%27%20height=%27100%25%27%20fill=%27%23e2e8f0%27/%3E%3Ctext%20x=%2750%25%27%20y=%2750%25%27%20dominant-baseline=%27middle%27%20text-anchor=%27middle%27%20fill=%27%2364748b%27%20font-family=%27sans-serif%27%20font-size=%2720%27%20font-weight=%27bold%27%3EADVENTURE%20VILLAGE%3C/text%3E%3C/svg%3E" alt="รูปปัญหาที่แจ้ง">
+                        </div>
+                        <div class="detail-hero-info">
+                            <h2 class="detail-category" id="detailCategory">ประเภทปัญหา</h2>
+                            <p class="detail-desc" id="detailDescription">รายละเอียด...</p>
+                            <div class="detail-meta-list">
+                                <div>📍 <strong id="detailLocation">-</strong></div>
+                                <div>🕒 <strong>แจ้งเมื่อ : <span id="detailDate">-</span></strong></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- รูปภาพหลังดำเนินการซ่อมเสร็จ (แสดงเมื่อช่างอัปโหลดรูปแล้ว) -->
+                    <div class="photo-box" id="afterPhotoBox" style="display: none;">
+                        <span class="photo-label">✅ รูปภาพหลังดำเนินการซ่อมเสร็จ</span>
+                        <img id="detailAfterImg" src="" alt="รูปหลังซ่อมเสร็จ">
+                    </div>
+
+                    <!-- กล่องที่ 1: ขั้นตอนการดำเนินงาน (แถบขีดแนวนอน 5 ขั้นตามภาพ) -->
+                    <div class="outlined-box">
+                        <h3 class="box-title">ขั้นตอนการดำเนินงาน</h3>
+                        <div class="progress-steps-grid" id="progressStepsContainer"></div>
+                    </div>
+
+                    <!-- กล่องที่ 2: ไทม์ไลน์บันทึกประวัติการทำงาน -->
+                    <div class="outlined-box">
+                        <h3 class="box-title">ไทม์ไลน์บันทึกประวัติการทำงาน</h3>
+                        <div class="history-timeline" id="timelineContainer"></div>
+                    </div>
+
+                    <!-- กล่องที่ 3: กระดานพูดคุย/สอบถาม -->
+                    <div class="outlined-box">
+                        <h3 class="box-title">กระดานพูดคุย/สอบถาม</h3>
+                        <div class="chat-box-clean" id="chatMessagesContainer"></div>
+
+                        <form class="chat-input-clean" onsubmit="sendChatMessage(event)">
+                            <input type="text" id="chatInput" placeholder="พิมพ์ข้อความสอบถาม..." required>
+                            <button type="submit" class="btn-send-circle" title="ส่งข้อความ">
+                                <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+                                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z" />
+                                </svg>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- กล่องที่ 4: ประเมินความพึงพอใจ (แสดงเฉพาะเมื่อสถานะซ่อมเสร็จสิ้น) -->
+                    <div class="outlined-box rating-card" id="ratingSection" style="display: none;">
+                        <h3 class="box-title">⭐ ประเมินความพึงพอใจหลังซ่อมเสร็จ</h3>
+                        <div class="star-rating" id="starContainer">
+                            <button type="button" class="star-btn" data-value="1" onclick="selectStar(1)">★</button>
+                            <button type="button" class="star-btn" data-value="2" onclick="selectStar(2)">★</button>
+                            <button type="button" class="star-btn" data-value="3" onclick="selectStar(3)">★</button>
+                            <button type="button" class="star-btn" data-value="4" onclick="selectStar(4)">★</button>
+                            <button type="button" class="star-btn" data-value="5" onclick="selectStar(5)">★</button>
+                        </div>
+                        <input type="hidden" id="selectedRating" value="0">
+                        <textarea id="ratingComment" class="rating-textarea" rows="2"
+                            placeholder="ข้อเสนอแนะเพิ่มเติม..."></textarea>
+                        <div class="rating-submit-row">
+                            <button type="button" class="btn-submit-rating"
+                                onclick="submitRating()">ส่งผลประเมิน</button>
+                        </div>
+                        <p id="ratingSavedMsg" class="rating-saved-text" style="display: none;">✅
+                            ขอบคุณสำหรับการประเมินความพึงพอใจ</p>
+                    </div>
+
+                </section>
+            </main>
+        </div>
+    </div>
+
+    <script src="/status.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>เข้าสู่ระบบ - Adventure Village</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <div class="landing-container">
+        <!-- ชั้นที่ 1: รูปภาพพื้นหลัง -->
+        <div class="bg-image"></div>
+
+        <!-- ชั้นที่ 2: แผ่นสีดำโปร่งแสง -->
+        <div class="bg-overlay"></div>
+
+        <!-- ชั้นที่ 3: เนื้อหาหน้าเข้าสู่ระบบ -->
+        <div class="content-wrapper">
+
+            <!-- NAV TOP: ปุ่มย้อนกลับ -->
+            <nav class="register-nav">
+                <a href="select-role.html" class="back-link">← ย้อนกลับ</a>
+            </nav>
+
+            <!-- LOGIN CONTAINER (จัดกึ่งกลาง 100%) -->
+            <main class="login-container">
+                <h1 class="login-title">เข้าสู่ระบบ</h1>
+
+                <!-- FROSTED GLASS CARD -->
+                <!-- เดิม: <form id="loginForm" class="login-card" onsubmit="handleLogin(event)"> -->
+                <!-- แก้เป็นแบบนี้ครับ: -->
+                <form id="loginForm" class="login-card">
+
+                    <!-- ชื่อผู้ใช้ -->
+                    <div class="form-group">
+                        <label for="username">ชื่อผู้ใช้ <span class="required">*</span></label>
+                        <input type="text" id="username" placeholder="กรอกชื่อผู้ใช้" oninput="clearLoginError()"
+                            required>
+                    </div>
+
+                    <!-- รหัสผ่าน -->
+                    <div class="form-group">
+                        <label for="password">รหัสผ่าน <span class="required">*</span></label>
+                        <input type="password" id="password" placeholder="กรอกรหัสผ่าน" oninput="clearLoginError()"
+                            required>
+                    </div>
+
+                    <!-- ข้อความแจ้งเตือนเมื่อกรอกผิด -->
+                    <span class="error-msg" id="loginError" style="text-align: center;"></span>
+
+                    <!-- ปุ่มเข้าสู่ระบบ -->
+                    <button type="submit" class="btn-submit">เข้าสู่ระบบ</button>
+
+                    <!-- ลิงก์สลับไปหน้าลงทะเบียน (แสดงเฉพาะบทบาทลูกบ้านเท่านั้น) -->
+                    <div class="auth-switch-text" id="registerLinkBox" style="display: none;">
+                        <span>ยังไม่มีบัญชี?</span>
+                        <a href="/register.html">ลงทะเบียนที่นี่</a>
+                    </div>
+
+                </form>
+            </main>
+
+        </div>
+    </div>
+
+    <script src="/script.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ตรวจสอบสถานะการแจ้งปัญหา - Adventure Village</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;1,400;1,700;1,800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="landing-container">
+        <div class="bg-image"></div>
+        <div class="bg-overlay"></div>
+
+        <div class="content-wrapper">
+            <!-- ปุ่มย้อนกลับ -->
+            <nav class="register-nav">
+                <a href="/dashboard.html" class="back-link">← ย้อนกลับ</a>
+            </nav>
+
+            <main class="status-container">
+                <h1 class="status-page-title">ตรวจสอบสถานะการแจ้งปัญหา</h1>
+
+                <!-- แถบตัวกรองสถานะ -->
+                <div class="filter-bar">
+                    <button type="button" class="filter-btn active" onclick="filterIssues('all', this)">ทั้งหมด</button>
+                    <button type="button" class="filter-btn"
+                        onclick="filterIssues('pending', this)">รอดำเนินการ</button>
+                    <button type="button" class="filter-btn"
+                        onclick="filterIssues('in_progress', this)">กำลังดำเนินการ</button>
+                    <button type="button" class="filter-btn"
+                        onclick="filterIssues('completed', this)">ซ่อมเสร็จสิ้น</button>
+                </div>
+
+                <!-- รายการปัญหาที่แจ้ง (สร้างอัตโนมัติจาก status.js) -->
+                <div id="issueListContainer" class="issue-list"></div>
+            </main>
+        </div>
+    </div>
+
+    <script src="/status.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>

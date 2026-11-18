@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Adventure Village - ยินดีต้อนรับเข้าสู่หมู่บ้านผจญภัย</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;1,400;1,600&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- HERO & MAIN CONTAINER -->
+    <div class="landing-container">
+
+        <!-- TOP NAVIGATION BAR -->
+        <nav class="navbar">
+            <div class="nav-auth-buttons">
+                <!-- ปุ่มเข้าสู่ระบบ: วิ่งตรงไปหน้า login.html ทันที -->
+                <button class="btn-pill btn-white" onclick="window.location.href='login.html'">เข้าสู่ระบบ</button>
+
+                <!-- ปุ่มลงทะเบียน: วิ่งมาหน้าเลือกบทบาท (select-role.html) ก่อน -->
+                <button class="btn-pill btn-white" onclick="window.location.href='select-role.html'">ลงทะเบียน</button>
+            </div>
+        </nav>
+
+        <!-- MAIN HERO CONTENT -->
+        <main class="hero-content">
+
+            <!-- TITLE & SUBTITLE -->
+            <div class="header-titles">
+                <h1 class="main-title">ADVENTURE VILLAGE</h1>
+                <h2 class="sub-title">ยินดีต้อนรับเข้าสู่หมู่บ้านผจญภัย</h2>
+            </div>
+
+            <!-- DESCRIPTION TEXT -->
+            <p class="description-text">
+                ที่นี่คือเว็บไซต์ที่ให้คนในหมู่บ้านสามารถ แจ้งปัญหาหรือสิ่งผิดปกติที่พบในพื้นที่<br
+                    class="desktop-only">
+                โดยสามารถแนบรูปภาพและระบุตำแหน่งของปัญหาได้
+            </p>
+
+            <!-- CALL TO ACTION CARD -->
+            <div class="cta-card">
+                <h3 class="cta-title">พร้อมให้ชุมชนน่าอยู่ขึ้นหรือยัง?</h3>
+                <div class="cta-buttons">
+                    <button class="btn-pill btn-dark" onclick="goToSelectRole()">เริ่มต้นใช้งาน</button>
+                    <button class="btn-pill btn-dark" onclick="goToSelectRole()">เข้าสู่ระบบ</button>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- FOOTER VILLAGE ILLUSTRATION -->
+        <div class="village-footer-bg"></div>
+
+    </div>
+
+    <script src="/script.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>

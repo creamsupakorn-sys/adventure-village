@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="th">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ระบบจัดการนิติบุคคล - Adventure Village</title>
+    <link rel="stylesheet" href="/style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Prompt:ital,wght@0,300;0,400;0,600;0,700;0,800;0,900;1,400;1,700;1,800&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="landing-container admin-container" id="adminWrapper">
+
+        <!-- NAV TOP BAR -->
+        <nav class="admin-nav-bar">
+            <div class="admin-top-controls">
+                <div class="user-menu-wrapper">
+                    <div class="user-menu-dropdown" onclick="toggleAdminMenu()">
+                        <div class="user-avatar-sm">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                            </svg>
+                        </div>
+                        <span class="dropdown-arrow">▼</span>
+                    </div>
+
+                    <div class="profile-dropdown-card" id="adminProfileDropdown">
+                        <div class="dropdown-header">
+                            <div class="dropdown-avatar">
+                                <svg viewBox="0 0 24 24" fill="currentColor">
+                                    <path
+                                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                                </svg>
+                            </div>
+                            <div class="dropdown-user-info">
+                                <h4 id="adminDropdownName">คุณ ปรียา มงคล</h4>
+                                <p>🏢 นิติบุคคล (แอดมิน)</p>
+                                <p>🏠 สำนักงานส่วนกลาง</p>
+                            </div>
+                        </div>
+                        <hr class="dropdown-divider">
+                        <button type="button" class="btn-logout" onclick="clearAuthSessionAndLogout()">ออกจากระบบ</button>
+                    </div>
+                </div>
+            </div>
+        </nav>
+
+        <!-- MAIN CONTENT -->
+        <main class="admin-dashboard-main">
+
+            <!-- HEADER TITLES -->
+            <div class="admin-header-titles">
+                <h1 class="admin-main-title">ระบบจัดการแจ้งปัญหาส่วนกลาง</h1>
+                <h2 class="admin-sub-title">ยินดีต้อนรับ <span id="adminWelcomeName">คุณปรียา มงคล (นิติบุคคล)</span>
+                    สู่หมู่บ้านผจญภัย</h2>
+            </div>
+
+            <!-- ADMIN PROFILE & SUMMARY CARD -->
+            <section class="admin-profile-card">
+                <div class="admin-card-top">
+                    <div class="admin-user-left">
+                        <div class="admin-avatar-lg">
+                            <svg viewBox="0 0 24 24" fill="currentColor">
+                                <path
+                                    d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2c-2.5 0-4.71-1.28-6-3.22.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08-1.29 1.94-3.5 3.22-6 3.22z" />
+                            </svg>
+                        </div>
+                        <div class="admin-user-details">
+                            <h3 id="adminCardGreeting">สวัสดี, คุณ ปรียา มงคล</h3>
+                            <p>🏢 นิติบุคคล (แอดมิน)</p>
+                            <p>🏠 สำนักงานส่วนกลาง</p>
+                        </div>
+                    </div>
+
+                    <div class="admin-top-actions">
+                        <button type="button" class="btn-pill-dark" onclick="window.location.href='admin-news.html'">
+                            <span>+ สร้างประกาศข่าว</span>
+                        </button>
+                        <button type="button" class="btn-pill-dark" onclick="window.location.href='admin-users.html'">
+                            <span>🔍 เช็คข้อมูลทั้งหมด</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- 4 STATUS METRIC BOXES -->
+                <div class="admin-stats-grid">
+                    <div class="stat-box" onclick="filterAdminIssues('pending')">
+                        <div class="stat-label">⚠️ รอตรวจสอบ</div>
+                        <div class="stat-value" id="countPending">0</div>
+                    </div>
+                    <div class="stat-box" onclick="filterAdminIssues('assigned')">
+                        <div class="stat-label">📋 มอบหมายแล้ว</div>
+                        <div class="stat-value" id="countAssigned">0</div>
+                    </div>
+                    <div class="stat-box" onclick="filterAdminIssues('in_progress')">
+                        <div class="stat-label">🔧 กำลังซ่อมแซม</div>
+                        <div class="stat-value" id="countInProgress">0</div>
+                    </div>
+                    <div class="stat-box" onclick="filterAdminIssues('completed')">
+                        <div class="stat-label">✅ แก้ไขเสร็จสิ้น</div>
+                        <div class="stat-value" id="countCompleted">0</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- TABS: รายการแจ้งปัญหาทั้งหมด / ประกาศข่าวประชาสัมพันธ์ -->
+            <div class="admin-main-tabs">
+                <button type="button" class="main-tab-btn active" id="tabIssuesBtn" onclick="switchAdminTab('issues')">
+                    รายการแจ้งปัญหาทั้งหมด
+                </button>
+                <button type="button" class="main-tab-btn" id="tabNewsBtn" onclick="switchAdminTab('news')">
+                    ประกาศข่าวประชาสัมพันธ์
+                </button>
+            </div>
+
+            <!-- TAB 1: รายการแจ้งปัญหาทั้งหมด -->
+            <section id="issuesTabSection" class="tab-panel">
+                <div class="admin-search-row">
+                    <input type="text" id="adminSearchInput" class="admin-search-input"
+                        placeholder="🔍 ค้นหาคำอธิบายปัญหา, พิกัด, รหัสงาน หรือชื่อผู้แจ้ง..."
+                        oninput="renderIssuesTable()">
+
+                    <select id="adminCategoryFilter" class="admin-select-filter" onchange="renderIssuesTable()">
+                        <option value="all">ทุกหมวดหมู่ปัญหา</option>
+                        <option value="ขยะ">🗑️ ขยะ</option>
+                        <option value="ไฟฟ้า">⚡ ไฟฟ้า</option>
+                        <option value="น้ำ">💧 น้ำ</option>
+                        <option value="ถนน">🛣️ ถนน</option>
+                        <option value="สัตว์จรจัด">🐾 สัตว์จรจัด</option>
+                        <option value="ไฟ">🔥 ไฟ</option>
+                        <option value="อื่นๆ">⚠️ อื่นๆ</option>
+                    </select>
+                </div>
+
+                <div class="status-filter-bar">
+                    <span class="filter-label">สถานะ :</span>
+                    <button type="button" class="status-pill-btn active" data-status="all"
+                        onclick="filterAdminIssues('all')">
+                        ทั้งหมด (<span id="badgeAll">0</span>)
+                    </button>
+                    <button type="button" class="status-pill-btn" data-status="pending"
+                        onclick="filterAdminIssues('pending')">
+                        รอตรวจสอบ (<span id="badgePending">0</span>)
+                    </button>
+                    <button type="button" class="status-pill-btn" data-status="assigned"
+                        onclick="filterAdminIssues('assigned')">
+                        มอบหมายแล้ว (<span id="badgeAssigned">0</span>)
+                    </button>
+                    <button type="button" class="status-pill-btn" data-status="in_progress"
+                        onclick="filterAdminIssues('in_progress')">
+                        กำลังซ่อมแซม (<span id="badgeInProgress">0</span>)
+                    </button>
+                    <button type="button" class="status-pill-btn" data-status="completed"
+                        onclick="filterAdminIssues('completed')">
+                        แก้ไขเสร็จสิ้น (<span id="badgeCompleted">0</span>)
+                    </button>
+                </div>
+
+                <div class="admin-table-card">
+                    <table class="village-table">
+                        <thead>
+                            <tr>
+                                <th>ปัญหา</th>
+                                <th>ประเภทของปัญหา</th>
+                                <th>จุดเกิดเหตุ</th>
+                                <th>ผู้แจ้ง</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminIssuesTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- TAB 2: ประกาศข่าวประชาสัมพันธ์ -->
+            <section id="newsTabSection" class="tab-panel" style="display: none;">
+                <div class="tab-action-right">
+                    <button type="button" class="btn-pill-dark" onclick="window.location.href='admin-news.html'">
+                        <span>📢 ไปที่หน้าจัดการประกาศข่าวทั้งหมด →</span>
+                    </button>
+                </div>
+                <div class="admin-table-card">
+                    <table class="village-table">
+                        <thead>
+                            <tr>
+                                <th>เนื้อหาประกาศข่าวประชาสัมพันธ์</th>
+                                <th>วันที่ลงประกาศ</th>
+                                <th>จัดการ</th>
+                            </tr>
+                        </thead>
+                        <tbody id="adminNewsTbody"></tbody>
+                    </table>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- MODAL 1: ป๊อปอัพรายละเอียดปัญหาและมอบหมายงานให้ช่าง -->
+    <div class="admin-modal-overlay" id="issueDetailModal">
+        <div class="admin-modal-card">
+            <div class="modal-top">
+                <h3 id="modalTitle">รายละเอียดปัญหา #ISS-101</h3>
+                <button type="button" class="modal-close" onclick="closeModal('issueDetailModal')">×</button>
+            </div>
+
+            <div class="modal-images-row">
+                <div class="modal-img-box">
+                    <span class="img-tag">📸 รูปภาพก่อนซ่อม (จากลูกบ้าน)</span>
+                    <img id="modalIssueImg" src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27400%27%20height=%27250%27%3E%3Crect%20width=%27100%25%27%20height=%27100%25%27%20fill=%27%23e2e8f0%27/%3E%3Ctext%20x=%2750%25%27%20y=%2750%25%27%20dominant-baseline=%27middle%27%20text-anchor=%27middle%27%20fill=%27%2364748b%27%20font-family=%27sans-serif%27%20font-size=%2720%27%20font-weight=%27bold%27%3EADVENTURE%20VILLAGE%3C/text%3E%3C/svg%3E" alt="รูปภาพปัญหา">
+                </div>
+                <div class="modal-img-box" id="modalAfterImgBox" style="display: none;">
+                    <span class="img-tag after">✅ รูปภาพหลังซ่อม (จากช่าง)</span>
+                    <img id="modalAfterImg" src="" alt="รูปหลังซ่อม">
+                </div>
+            </div>
+
+            <div class="modal-meta">
+                <p id="modalIssueDesc" class="meta-title"></p>
+                <p id="modalIssueInfo" class="meta-sub"></p>
+            </div>
+
+            <div id="modalChatBox" class="modal-chat-history" style="display: none;"></div>
+
+            <form onsubmit="submitAssignTechnician(event)" class="modal-form">
+                <label for="modalTechSelect">มอบหมายช่างซ่อมบำรุง</label>
+                <select id="modalTechSelect" class="modal-input">
+                    <option value="">-- เลือกช่างซ่อมบำรุง --</option>
+                </select>
+
+                <label for="modalStatusSelect">อัปเดตสถานะการดำเนินงาน</label>
+                <select id="modalStatusSelect" class="modal-input">
+                    <option value="pending">รอตรวจสอบ</option>
+                    <option value="assigned">มอบหมายแล้ว</option>
+                    <option value="in_progress">กำลังซ่อมแซม</option>
+                    <option value="completed">แก้ไขเสร็จสิ้น (ปิดเคส)</option>
+                </select>
+
+                <label for="modalReplyInput">ส่งข้อความแจ้งลูกบ้าน / หมายเหตุถึงช่าง</label>
+                <textarea id="modalReplyInput" class="modal-textarea" rows="2"
+                    placeholder="เช่น รับเรื่องเรียบร้อยแล้ว กำลังส่งช่างเข้าตรวจสอบพื้นที่..."></textarea>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-action btn-red"
+                        onclick="closeModal('issueDetailModal')">ปิดหน้าต่าง</button>
+                    <button type="submit" class="btn-action btn-green">บันทึกและอัปเดตงาน</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- MODAL 2: ป๊อปอัพดูตัวอย่างเนื้อหาประกาศข่าวประชาสัมพันธ์พร้อมรูปภาพ -->
+    <div class="admin-modal-overlay" id="newsPreviewModal">
+        <div class="admin-modal-card">
+            <div class="modal-top">
+                <h3>📢 รายละเอียดประกาศข่าวประชาสัมพันธ์</h3>
+                <button type="button" class="modal-close" onclick="closeModal('newsPreviewModal')">×</button>
+            </div>
+
+            <div class="news-preview-modal-body">
+                <div class="news-preview-modal-media">
+                    <img id="previewNewsImg" src="data:image/svg+xml,%3Csvg%20xmlns=%27http://www.w3.org/2000/svg%27%20width=%27400%27%20height=%27250%27%3E%3Crect%20width=%27100%25%27%20height=%27100%25%27%20fill=%27%23e2e8f0%27/%3E%3Ctext%20x=%2750%25%27%20y=%2750%25%27%20dominant-baseline=%27middle%27%20text-anchor=%27middle%27%20fill=%27%2364748b%27%20font-family=%27sans-serif%27%20font-size=%2720%27%20font-weight=%27bold%27%3EADVENTURE%20VILLAGE%3C/text%3E%3C/svg%3E" alt="รูปประกอบประกาศข่าว">
+                    <span class="news-date-red" id="previewNewsDate">ลง ณ วันที่ --/--/----</span>
+                </div>
+                <p class="dashboard-news-text" id="previewNewsContent"></p>
+            </div>
+
+            <div class="modal-actions">
+                <button type="button" class="btn-action btn-red"
+                    onclick="closeModal('newsPreviewModal')">ปิดหน้าต่าง</button>
+                <button type="button" class="btn-pill-dark" onclick="window.location.href='admin-news.html'">✏️
+                    แก้ไขประกาศนี้</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="/admin.js"></script>
+    <script src="/theme.js"></script>
+</body>
+
+</html>
